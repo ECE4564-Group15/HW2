@@ -49,3 +49,6 @@ The `Publisher` connection type is even easier to use. Once you have you MQClien
   test.send_message(callback)
   ```
 It is important to note that this method is *non-blocking*, so once the message is sent you should see a message on the console saying your message is sent. After that, you may call `send_message` as many times as you need.
+
+## Examples
+Fully functioning examples are included in the Test\*.py files.
