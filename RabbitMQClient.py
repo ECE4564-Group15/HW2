@@ -2,7 +2,7 @@
 ## File:    RabbitMQClient.py 
 ## Date:    02/22/2017
 ## Purpose: Class that handles connections to a rabbit MQ server with a direct exchange.
-## Last modified: 02/22/2017  7:39:02 PM (EST)
+## Last modified: 02/22/2017  8:15:29 PM (EST)
 
 import pika
 import pika.exceptions as PE
@@ -48,17 +48,23 @@ class MQClient:
             self,
             hostname,
             queue_name,
+            user,
+            password,
+            vhost,
             connection_type=Publisher.Normal):
         self.hostname = hostname
         self.queue_name = queue_name
+        self.user = user
+        self.password = password
+        self.vhost = vhost
         self.connection_type = connection_type
         self.connection = None
         #create the rest of the needed parameters
         try:
-            self.credentials = pika.PlainCredentials('Usage','team15')
+            self.credentials = pika.PlainCredentials(self.user,self.password)
             self.connection_params = pika.ConnectionParameters(
                     host=self.hostname,
-                    virtual_host='usage_vhost',
+                    virtual_host=self.vhost,
                     credentials=self.credentials)
             self.connection = pika.BlockingConnection(self.connection_params)
             self.channel = self.connection.channel()
