@@ -19,9 +19,12 @@ The constructor of the MQClient class is as such:
   MQClient(
       hostname,
       queue_name,
+	  user,
+      password,
+      vhost,
       connection_type=Publisher.Normal)
   ``` 
-Where `hostname` is the IP address or hostname of the RabbitMQ server, `queue_name` is the name of the queue you want to interact with, and `connection_type` is the type of client you want.
+Where `hostname` is the IP address or hostname of the RabbitMQ server, `queue_name` is the name of the queue you want to interact with, `user` is the RabbitMQ username, `password` is the User's password, `vhost` is the virtual host to use, and `connection_type` is the type of client you want.
 For `connection_type` you must choose one of the `Connection` SubTypes and then choose whether to use the `Normal` or `Debug` version. In general, `Normal` will suffice.
 
 ### Exceptions
@@ -32,7 +35,7 @@ The `Consumer` connection type of MQClient can be used to listen to the specifie
 
 This is done by calling the *blocking* method `MQClient#subscribe` like so:
   ```python
-  test = MQClient('localhost','example',Consumer.Normal)
+  test = MQClient('localhost','example','Usage','team15','usage_vhost',Consumer.Normal)
   test.subscribe(callback)
   ```
 The important part to note is the use of a callback function to handle the messages. As such, you must create or have access to a method to handle the messages you receive with the signature: `func(message)` where `message` is a raw string. A simple example is:
@@ -45,7 +48,7 @@ Additionally, note that the `subscribe` method is *blocking* so your program can
 ### Publisher Usage
 The `Publisher` connection type is even easier to use. Once you have you MQClient object, you simple have to call the `MQClient#send_message` method like so:
   ```python
-  test = MQClient('localhost','example',Publisher.Normal)
+  test = MQClient('localhost','example','Usage','team15','usage_vhost',Publisher.Normal)
   test.send_message(callback)
   ```
 It is important to note that this method is *non-blocking*, so once the message is sent you should see a message on the console saying your message is sent. After that, you may call `send_message` as many times as you need.
