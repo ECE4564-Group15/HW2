@@ -1,0 +1,51 @@
+# HW2
+HW2 Little Brother
+
+# How to use the RabbitMQClient package
+
+First of all, the package includes:
+  1. `MQClient` Class
+  2. `Connection` Type
+    - Connection SubTypes: `Consumer` and `Publisher`
+    - Each SubType can hold value `Normal` or value `Debug`
+  
+Just use a simple import statement like so:
+  ```python
+  from RabbitMQClient import MQClient, Connection, Consumer, Publisher
+  ```
+## MQClient Class
+The constructor of the MQClient class is as such:
+  ```python
+  MQClient(
+      hostname,
+      queue_name,
+      connection_type=Publisher.Normal)
+  ``` 
+Where `hostname` is the IP address or hostname of the RabbitMQ server, `queue_name` is the name of the queue you want to interact with, and `connection_type` is the type of client you want.
+For `connection_type` you must choose one of the `Connection` SubTypes and then choose whether to use the `Normal` or `Debug` version. In general, `Normal` will suffice.
+
+### Exceptions
+The  `MQClient` constructor will raise `ValueError` exception is you pass in an invalid argument or something else happens. Be sure to handle this in your code.
+
+### Consumer Usage
+The `Consumer` connection type of MQClient can be used to listen to the specified message queue and do something on each message received.
+
+This is done by calling the *blocking* method `MQClient#subscribe` like so:
+  ```python
+  test = MQClient('localhost','example',Consumer.Normal)
+  test.subscribe(callback)
+  ```
+The important part to note is the use of a callback function to handle the messages. As such, you must create or have access to a method to handle the messages you receive with the signature: `func(message)` where `message` is a raw string. A simple example is:
+  ```python
+  def example_handler(msg):
+    print("GOT: %s"%(str(msg))
+  ```
+Additionally, note that the `subscribe` method is *blocking* so your program cannot execute while this is running. As such, ass functionality must be called from your callback function.
+  
+### Publisher Usage
+The `Publisher` connection type is even easier to use. Once you have you MQClient object, you simple have to call the `MQClient#send_message` method like so:
+  ```python
+  test = MQClient('localhost','example',Publisher.Normal)
+  test.send_message(callback)
+  ```
+It is important to note that this method is *non-blocking*, so once the message is sent you should see a message on the console saying your message is sent. After that, you may call `send_message` as many times as you need.
