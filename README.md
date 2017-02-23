@@ -43,7 +43,7 @@ The important part to note is the use of a callback function to handle the messa
   def example_handler(msg):
     print("GOT: %s"%(str(msg))
   ```
-Additionally, note that the `subscribe` method is *blocking* so your program cannot execute while this is running. As such, ass functionality must be called from your callback function.
+Additionally, note that the `subscribe` method is *blocking* so your program cannot execute while this is running. As such, all functionality must be called from your callback function.
   
 ### Publisher Usage
 The `Publisher` connection type is even easier to use. Once you have you MQClient object, you simple have to call the `MQClient#send_message` method like so:
