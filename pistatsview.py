@@ -25,15 +25,15 @@ def Print(host,data):
     time.sleep(1)
 
 def LED(cpuU) :
-   echo 0 >/sys/class/gpio/gpio17/value
-   echo 0 >/sys/class/gpio/gpio19/value
-   echo 0 >/sys/class/gpio/gpio21/value
+   os.system("echo 0 >/sys/class/gpio/gpio17/value")
+   os.system("echo 0 >/sys/class/gpio/gpio19/value")
+   os.system("echo 0 >/sys/class/gpio/gpio21/value")
    if cpuU <0.25:
-       echo 1 >/sys/class/gpio/gpio17/value
+       os.system("echo 1 >/sys/class/gpio/gpio19/value")
    elif cpuU >= 0.25 and cpuU < 0.5:
-       echo 1 >/sys/class/gpio/gpio19/value
+       os.system("echo 1 >/sys/class/gpio/gpio17/value")
    else : 
-       echo 1 >/sys/class/gpio/gpio21/value
+       os.system("echo 1 >/sys/class/gpio/gpio21/value")
 
        
 def main():
