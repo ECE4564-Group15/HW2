@@ -10,8 +10,8 @@ import time
 
 class CPU:
     # split the file information into a list
-    def parse_stat(self):
-        list = self.string.split()
+    def parse_stat(self, string):
+        list = string.split()
         return list
 
     def calculate_util(self, idle, previous_idle, uptime, previous_uptime):
@@ -21,15 +21,15 @@ class CPU:
     # print the cpu utilization every 1 sec
     def print_util(self):
         f = open('/proc/uptime', 'r')
-        self.string = f.read()
-        alist = self.parse_stat
+        string = f.read()
+        alist = self.parse_stat(string)
         previous_uptime = alist[0]
         previous_idle = alist[1]
         time.sleep(1)
         while True:
             f = open('/proc/uptime', 'r')
-            self.string = f.read()
-            alist = self.parse_stat
+            string = f.read()
+            alist = self.parse_stat(string)
             uptime = alist[0]
             idle = alist[1]
             utilization = self.calculate_util(idle, previous_idle, uptime, previous_uptime)
