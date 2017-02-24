@@ -1,6 +1,9 @@
 # HW2
 HW2 Little Brother
 
+# SuperHost
+branch SuperHost will be used to implement the host functionality for little brother homework.
+
 # How to use the RabbitMQClient package
 
 First of all, the package includes:
