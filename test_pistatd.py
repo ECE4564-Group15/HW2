@@ -6,18 +6,12 @@
 
 from pistatd import CPU
 
-def test_cpu_parse_stat():
+def test_print_util():
     a = CPU()
-    list = a.parse_stat
-    print('The list is ', list)
-
-def test_calculate_util():
-    a = CPU()
-    a.calculate_util()
+    a.print_util()
 
 
 def main():
-    test_cpu_parse_stat()
-    test_calculate_util()
+    test_print_util()
 
 main()

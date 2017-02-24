@@ -7,31 +7,33 @@
 import json
 import time
 
-class CPU:
-    def __init__(self):
-        f = open('/proc/uptime', 'r')
-        self.string = f.read()
-        #self.string = '7342.09 33222.32\n'
 
-    @property
-    #split the file information into a list
+class CPU:
+    # split the file information into a list
     def parse_stat(self):
         list = self.string.split()
         return list
 
-    #print the cpu utilization every 1 sec
-    def calculate_util(self):
+    def calculate_util(self, idle, previous_idle, uptime, previous_uptime):
+        utilization = 1 - ((float(idle) - float(previous_idle)) / (float(uptime) - float(previous_uptime)))
+        return utilization
+
+    # print the cpu utilization every 1 sec
+    def print_util(self):
+        f = open('/proc/uptime', 'r')
+        self.string = f.read()
         alist = self.parse_stat
-        previous_uptime = int(alist[0])
-        previous_idle = int(alist[1])
+        previous_uptime = alist[0]
+        previous_idle = alist[1]
         time.sleep(1)
         while True:
+            f = open('/proc/uptime', 'r')
+            self.string = f.read()
             alist = self.parse_stat
             uptime = alist[0]
             idle = alist[1]
-            utilization = 1 - ((idle - previous_idle)/(uptime - previous_uptime))
-            print (utilization)
-            time.sleep(1)
+            utilization = self.calculate_util(idle, previous_idle, uptime, previous_uptime)
             previous_idle = idle
             previous_uptime = uptime
-
+            print(utilization)
+            time.sleep(1)
