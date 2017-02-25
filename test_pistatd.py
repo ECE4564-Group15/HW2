@@ -4,10 +4,10 @@
 ## Purpose: This file is to test the functionality of pistatd.py
 # !/usr/bin/env python3
 
-from pistatd import CPU
+from pistatd import Util
 
 def test_print_util():
-    a = CPU()
+    a = Util()
     a.print_util()
 
 
