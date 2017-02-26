@@ -6,22 +6,21 @@
 ##              info
 ## TODO: loop
 ##       database
-##       find high and low
 #!/usr/bin/env python3
 import os
 import time
 import json   
-# import pymongo # database
+#import pymongo # database
 # import pika    
-# from RabbitMQClient import MQClient, Consumer 
+#from RabbitMQClient import MQClient, Consumer 
 import argparse
 
-stats = '{ "net": {"lo": {"rx": 0,"tx": 0},"wlan0": {"rx": 708,"tx": 1192}, \
-          "eth0": {"rx": 0,"tx":0}},"cpu": 0.2771314211797171}'
+stats = '{ "net": {"lo": {"rx": 5,"tx": 3},"wlan0": {"rx": 708,"tx": 1192}, \
+          "eth0": {"rx": 2,"tx":1}},"cpu": 0.2771314211797171}'
 
-data = json.loads(stats)
+Data = json.loads(stats)
 
-
+'''
 def argvparser():
     global arg
     parser = argparse.ArgumentParser()
@@ -66,8 +65,8 @@ def recv(msg):
     data = json.loads(msg)
 
 def receive(msgbroker,routingkey,vhost='/',credentials='guest'):
-    if credentials != 'guest':
-        credentials = credentials.split(':'); 
+    if credentials != "guest":
+        credentials = str(credentials).split(':'); 
         try:
         #create connection
             client = MQClient(msgbroker,'tester1',credentials[0],\
@@ -83,41 +82,108 @@ def receive(msgbroker,routingkey,vhost='/',credentials='guest'):
             client.subscribe(recv)
         except KeyboardInterrupt:
             print("Exiting...")
+'''
+def savedb(data):
+    db = pymongo.MongoClient().hw2
+    db.utilization.insert(data)
+'''
 def run():
-    if(c!= 'None' && c!= 'None'):
-        receive(msgbroker,routingkey,p,c):
-    elif(c!= 'None'):
-        receive(msgbroker,routingkey,credential = c):
-    elif(p!='None'):
-        receive(msgbroker,routingkey,vhost = p):
+    if(arg['c']!= 'None' and arg['p']!= 'None'):
+        receive(arg['msgbroker'],arg['routkey'],arg['p'],arg['c'])
+    elif(arg['c']!= 'None'):
+        receive(arg['msgbroker'],arg['routkey'],credential = arg['c'])
+    elif(arg['p']!='None'):
+        receive(arg['msgbroker'],arg['routkey'],vhost = arg['p'])
     else:
-        receive(msgbroker,routingkey)
+        receive(arg['msgbroker'],arg['routkey'])
 
-
+'''
 def Print(host,data):
-    High = 1
-    Low = 0
+    CPUHigh = 0
+    CPULow = 10000
+
+    loHighRX = 0
+    loLowRX = 10000
+    loHighTX = 0
+    loLowTX = 10000
+
+    eth0HighRX = 0
+    eth0LowRX = 10000
+    eth0HighTX = 0
+    eth0LowTX = 10000
+
+    wlan0HighRX = 0
+    wlan0LowRX = 10000
+    wlan0HighTX = 0
+    wlan0LowTX = 10000
+
+    if data['cpu'] > CPUHigh:
+        CPUPHigh = data['cpu']
+    if data['cpu'] < CPULow:
+        CPULow = data['cpu']
+
+    if data['net']['lo']['rx']> loHighRX:
+        loHighRX = data['net']['lo']['rx'] 
+    if data['net']['lo']['rx'] < loLowRX:
+        loLowRX = data['net']['lo']['rx']
+    if data['net']['lo']['tx']> loHighTX:
+        loHighTX = data['net']['lo']['tx'] 
+    if data['net']['lo']['tx'] < loLowTX:
+        loLowTX = data['net']['lo']['tx']
+
+    if data['net']['eth0']['rx']> eth0HighRX:
+        eth0HighRX = data['net']['eth0']['rx'] 
+    if data['net']['eth0']['rx'] < eth0LowRX:
+        eth0LowRX = data['net']['eth0']['rx']
+    if data['net']['eth0']['tx']> eth0HighTX:
+        eth0HighTX = data['net']['eth0']['tx'] 
+    if data['net']['eth0']['tx'] < eth0LowTX:
+        eth0LowTX = data['net']['eth0']['tx']
+
+    if data['net']['wlan0']['rx']> wlan0HighRX:
+        wlan0HighRX = data['net']['wlan0']['rx'] 
+    if data['net']['wlan0']['rx'] < wlan0LowRX:
+        wlan0LowRX = data['net']['wlan0']['rx']
+    if data['net']['wlan0']['tx']> wlan0HighTX:
+        wlan0HighTX = data['net']['wlan0']['tx'] 
+    if data['net']['wlan0']['tx'] < wlan0LowTX:
+        wlan0LowTX = data['net']['wlan0']['tx']
+ 
     print(host);
-    print("cpu: ", data['cpu']);
-    print("lo: rx=",data['net']['lo']['rx'],"[Hi: ", High, " B/s, Lo: ", \
-           Low,  " B/s], tx= ", data['net']['lo']['tx']," B/s [Hi: ",\
-            High, " B/s, Lo: ", Low,  " B/s]")
-    print("eth0: rx=",data['net']['eth0']['rx'],"[Hi: ", High, " B/s, Lo: ",\
-           Low,  " B/s], tx= ", data['net']['eth0']['tx']," B/s [Hi: ", High,\
-           " B/s, Lo: ", Low,  " B/s]")
-    print("wlan0: rx=",data['net']['wlan0']['rx'],"[Hi: ", High, " B/s, Lo: ",\
-           Low,  " B/s], tx= ", data['net']['wlan0']['tx']," B/s [Hi: ", High,\
-           " B/s, Lo: ", Low,  " B/s]")
+    print("cpu: ", data['cpu'],
+          "[Hi: ", CPUHigh, ","\
+          " Lo: ", CPULow,"]");
+    print("lo: rx=",data['net']['lo']['rx']," B/s",\
+          "[Hi: ",  loHighRX, " B/s,",\
+          " Lo: ",  loLowRX,  " B/s],",\
+          " tx= ",  data['net']['lo']['tx']," B/s",\
+          " [Hi: ", loHighTX, " B/s,",\
+          " Lo: ",  loLowTX,  " B/s]")
+    print("eth0: rx=",data['net']['eth0']['rx'],"B/s",
+          "[Hi: ",  eth0HighRX, " B/s,",\
+          " Lo: ",  eth0LowRX,  " B/s],",\
+          " tx= ",  data['net']['eth0']['tx']," B/s",\
+          " [Hi: ", eth0HighTX, " B/s,",\
+          " Lo: ",  eth0LowTX,  " B/s]")
+    print("wlan0: rx=",data['net']['wlan0']['rx']," B/s ",\
+          "[Hi: ", wlan0HighRX, " B/s,",\
+          " Lo: ", wlan0LowRX,  " B/s],",\
+          " tx= ", data['net']['wlan0']['tx']," B/s ",\
+          "[Hi: ", wlan0HighTX, " B/s,",\
+          " Lo: ", wlan0LowTX, " B/s]")
     time.sleep(1)
 
 
-       
+      
 def main():
-    argvparser()
-    run()
-    init__LED()
-    Print("Host_1", data)
-    LED(data['cpu'])
+  #  argvparser()
+  #  run()
+  #  init__LED()
+    Print("Host_1", Data)
+    savedb(Data)
+  #  LED(data['cpu'])
     
 
 main()    
+
+
