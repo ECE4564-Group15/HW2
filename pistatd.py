@@ -65,11 +65,32 @@ class Util:
         routing_key = arg['routkey']
         # create a connection
         #client = MQClient(message_broker, routing_key, login, password, virtual_host, Publisher.Normal)
-
-        message_broker = arg['msgbroker']
-        #print (message_broker)
         '''
-        client = MQClient('127.0.0.1' , 'tester1', 'Usage', 'team15', 'usage_vhost', Publisher.Debug)
+        message_broker = arg['msgbroker']
+        mes = message_broker[0]
+
+        if (arg['p'] == None):
+            virtual_host = '/'
+        else:
+            vhost = arg['p']
+            virtual_host = vhost[0]
+
+        routkey = arg['routkey']
+        routing_key = routkey[0]
+
+        if (arg['c'] == None):
+            login = 'guest'
+            password = 'guest'
+        else:
+            login_password_list = arg['c']
+            login_password = login_password_list[0]
+            words = login_password.split(':')
+            login = str(words[0])
+            password = str(words[1])
+        #print (message_broker)
+
+        #client = MQClient(mes, 'tester1', 'Usage', 'team15', ' ', Publisher.Debug)
+        client = MQClient(mes, routing_key, login, password, virtual_host, Publisher.Debug)
         last_idle = last_total = 0
         last_wlan_receive = last_wlan_transmit = 0
         last_lo_receive = last_lo_transmit = 0
