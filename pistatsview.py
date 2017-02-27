@@ -4,9 +4,10 @@
 ## Date: 2.23.2017
 ## Description: This script is used to monitor, store, and display the hosts 
 ##              info
-## TODO: loop
-##       database
+## TODO: 
+##       
 #!/usr/bin/env python3
+
 import os
 import time
 import json   
@@ -80,7 +81,7 @@ def recv(msg):
     Data = json.loads(msg)
     savedb(Data)
     LED(Data['cpu'])
-    Print('test1',Data)
+    Print(arg.routingkey[0],Data)
 
 def receive(msgbroker,routingkey,vhost='/',credentials='guest'):
     if credentials[0] == 'guest':
@@ -202,10 +203,7 @@ def main():
     argvparser()
     init__LED()
     run()
-    Print(arg.routingkey, Data)
-    savedb(Data)
-    LED(data['cpu'])
-    
+
 
 main()    
 
