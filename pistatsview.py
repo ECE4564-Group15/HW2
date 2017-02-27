@@ -15,6 +15,24 @@ import pika
 from RabbitMQClient import MQClient, Consumer 
 import argparse
 
+CPUHigh = 0
+CPULow = 10000
+
+loHighRX = 0
+loLowRX = 10000
+loHighTX = 0
+loLowTX = 10000
+
+eth0HighRX = 0
+eth0LowRX = 10000
+eth0HighTX = 0
+eth0LowTX = 10000
+
+wlan0HighRX = 0
+wlan0LowRX = 10000
+wlan0HighTX = 0
+wlan0LowTX = 10000
+
 def argvparser():
     global arg
     parser = argparse.ArgumentParser()
@@ -100,24 +118,26 @@ def run():
 
 
 # def Print(host,data):
-    CPUHigh = 0
-    CPULow = 10000
 
-    loHighRX = 0
-    loLowRX = 10000
-    loHighTX = 0
-    loLowTX = 10000
-
-    eth0HighRX = 0
-    eth0LowRX = 10000
-    eth0HighTX = 0
-    eth0LowTX = 10000
-
-    wlan0HighRX = 0
-    wlan0LowRX = 10000
-    wlan0HighTX = 0
-    wlan0LowTX = 10000
 def Print(host,data):
+    global CPUHigh
+    global CPULow
+
+    global loHighRX
+    global loLowRX
+    global loHighTX
+    global loLowTX 
+
+    global eth0HighRX
+    global eth0LowRX 
+    global eth0HighTX
+    global eth0LowTX 
+
+    global wlan0HighRX 
+    global wlan0LowRX 
+    global wlan0HighTX
+    global wlan0LowTX 
+
     if data['cpu'] > CPUHigh:
         CPUHigh = data['cpu']
     if data['cpu'] < CPULow:
