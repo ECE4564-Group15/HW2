@@ -79,8 +79,8 @@ class Util:
         routing_key = routkey[0]
 
         if (arg['c'] == None):
-            login = 'guest'
-            password = 'guest'
+            login = 'Usage'
+            password = 'team15'
         else:
             login_password_list = arg['c']
             login_password = login_password_list[0]
