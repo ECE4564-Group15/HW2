@@ -46,12 +46,12 @@ class MQClient:
 
     def __init__(
             self,
-            hostname: object,
-            queue_name: object,
-            user: object,
-            password: object,
-            vhost: object,
-            connection_type: object = Publisher.Normal) -> object:
+            hostname,
+            queue_name,
+            user,
+            password,
+            vhost,
+            connection_type=Publisher.Normal):
         self.hostname = hostname
         self.queue_name = queue_name
         self.user = user
@@ -115,7 +115,7 @@ class MQClient:
                         exchange=self.exchange,
                         queue=self.queue_id,
                         routing_key=self.queue_name)
-        except PE.ChannelClosed as e:
+        except ChannelClosed as e:
             print('Error connecting to exchange: %s'%(e[1]))
         #else
         #do nothing, we are done setting up

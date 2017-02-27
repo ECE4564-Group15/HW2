@@ -10,7 +10,7 @@ def on_recv(message):
 def main():
     try:
         #create connection
-        client = MQClient('172.29.35.28','tester1','Usage','team15','usage_vhost',Consumer.Debug)
+        client = MQClient('127.0.0.1','tester1','Usage','team15','usage_vhost',Consumer.Debug)
 
         client.subscribe(on_recv)
     except KeyboardInterrupt:
