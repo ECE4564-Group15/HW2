@@ -1,6 +1,3 @@
-# SuperHost
-This branch is used to implement the host functionality.The host needs to sent CPU & Network load monitoring data to clients as a json Object.
-
 # How to setup RabbitMQ
 The RabbitMQ configuration used in this project is simple. We have a shell script that can be run that adds the new user: `Usage` with password `team15`. It also sets up a new vhost `usage_vhost` that can be specified. Finally, it adds the proper permissions for the new user and vhost as well as the guest and default vhost.
 
@@ -61,3 +58,26 @@ It is important to note that this method is *non-blocking*, so once the message 
 
 ## Examples
 Fully functioning examples are included in the Test\*.py files.
+
+# Host & Monitor
+
+For bost host and monitor, we have the similar usage as following. When we use it, we have to make sure they are same.
+
+Usage: pistatd.py [-h] [-b MSGBROKER] [-p P] [-c C] [-k ROUTKEY]
+
+Example: pistatd.py -b 127.0.0.1 -p usage_vhost -c Usage:team15 -k host_1
+
+optional arguments:
+  -h, --help    show this help message and exit
+  -b MSGBROKER  This is the IP address or named address of the message broker
+                to connect to
+   -p P         This is the virtual host to connect to on the message broker.
+                If not specified, should default to the root virtual host
+                (i.e. ‘/’)
+   -c C         Use the given credentials when connecting to the message
+                broker. If not specified,should default to a guest login
+   -k ROUTKEY   The routing key to use for filtering when subscribing to the
+                pi_utilization exchange on the message broker
+
+
+
