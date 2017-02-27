@@ -2,7 +2,7 @@
 ## File:    RabbitMQClient.py 
 ## Date:    02/22/2017
 ## Purpose: Class that handles connections to a rabbit MQ server with a direct exchange.
-## Last modified: 02/22/2017  8:15:29 PM (EST)
+## Last modified: 02/27/2017 11:34:38 AM (EST)
 
 import pika
 import pika.exceptions as PE
@@ -48,9 +48,9 @@ class MQClient:
             self,
             hostname,
             queue_name,
-            user,
-            password,
-            vhost,
+            user='Usage',
+            password='team15',
+            vhost='/',
             connection_type=Publisher.Normal):
         self.hostname = hostname
         self.queue_name = queue_name
