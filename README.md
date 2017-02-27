@@ -1,6 +1,12 @@
 # HW2
 HW2 Little Brother
 
+# How to setup RabbitMQ
+The RabbitMQ configuration used in this project is simple. We have a shell script that can be run that adds the new user: `Usage` with password `team15`. It also sets up a new vhost `usage_vhost` that can be specified. Finally, it adds the proper permissions for the new user and vhost as well as the guest and default vhost.
+
+**IMPORTANT**
+One final note is that this setup requires that the consumers as defined in the `RabbitMWClient` package be connected prior to the publisher's first use. This allows the proper queues to be setup in order to allow persistant messages. This can be acheived by modifying and running the [TestConsumer.py](TestConsumer.py) script.
+
 # How to use the RabbitMQClient package
 
 First of all, the package includes:
