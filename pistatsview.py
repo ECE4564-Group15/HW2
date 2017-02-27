@@ -81,22 +81,22 @@ def recv(msg):
     Data = json.loads(msg)
     savedb(Data)
     LED(Data['cpu'])
-    Print(arg.routingkey[0],Data)
+    Print(arg.routkey[0],Data)
 
-def receive(msgbroker,routingkey,vhost='/',credentials='guest'):
-    if credentials[0] == 'guest':
-        login = str('guest')
-        password = str('guest')
+def receive(msgbroker,routingkey,vhost='/',credentials='Usage:team15'):
+    if credentials ==None:
+        login = 'Usage'
+        password = 'team15'
 
     else:
         credentials = credentials[0].split(':')
         login = credentials[0]
         password = credentials[1]
     
-    print (login )
     msgbroker = msgbroker[0]
     routingkey = routingkey[0]
-    vhost = vhost[0]
+    if vhost != None:
+        vhost = vhost[0]
     try:
     # create connection
         client = MQClient(msgbroker,routingkey, login,password,\
@@ -195,7 +195,6 @@ def Print(host,data):
           " tx= ", data['net']['wlan0']['tx']," B/s ",\
           "[Hi: ", wlan0HighTX, " B/s,",\
           " Lo: ", wlan0LowTX, " B/s]")
-    time.sleep(1)
 
 
       
