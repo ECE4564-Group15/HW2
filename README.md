@@ -63,11 +63,17 @@ Fully functioning examples are included in the Test\*.py files.
 
 For bost host and monitor, we have the similar usage as following. When we use it, we have to make sure they are same.
 
-Usage: pistatd.py [-h] [-b MSGBROKER] [-p P] [-c C] [-k ROUTKEY]
-
-Example: pistatd.py -b 127.0.0.1 -p usage_vhost -c Usage:team15 -k host_1
-
+Usage:
+    ```python
+    pistatd.py [-h] [-b MSGBROKER] [-p P] [-c C] [-k ROUTKEY]
+    ```
+    
+Example:
+    ```
+    pistatd.py -b 127.0.0.1 -p usage_vhost -c Usage:team15 -k host_1
+    ```
 optional arguments:
+  ```
   -h, --help    show this help message and exit
   -b MSGBROKER  This is the IP address or named address of the message broker
                 to connect to
@@ -79,5 +85,5 @@ optional arguments:
    -k ROUTKEY   The routing key to use for filtering when subscribing to the
                 pi_utilization exchange on the message broker
 
-
+    ```
 
