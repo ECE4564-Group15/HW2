@@ -25,9 +25,9 @@ The constructor of the MQClient class is as such:
   MQClient(
       hostname,
       queue_name,
-	  user,
-      password,
-      vhost,
+	  user='Usage',
+      password='team15',
+      vhost='/',
       connection_type=Publisher.Normal)
   ``` 
 Where `hostname` is the IP address or hostname of the RabbitMQ server, `queue_name` is the name of the queue you want to interact with, `user` is the RabbitMQ username, `password` is the User's password, `vhost` is the virtual host to use, and `connection_type` is the type of client you want.
