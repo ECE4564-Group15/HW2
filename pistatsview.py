@@ -15,12 +15,6 @@ import pika
 from RabbitMQClient import MQClient, Consumer 
 import argparse
 
-stats = '{ "net": {"lo": {"rx": 5,"tx": 3},"wlan0": {"rx": 708,"tx": 1192}, \
-          "eth0": {"rx": 2,"tx":1}},"cpu": 0.2771314211797171}'
-
-Data = json.loads(stats)
-
-
 def argvparser():
     global arg
     parser = argparse.ArgumentParser()
@@ -62,30 +56,37 @@ def LED(cpuU) :
 
 def recv(msg):
     global Data
+    msg =  msg.decode("utf-8")
+    print(msg)
     Data = json.loads(msg)
+    savedb(Data)
+    LED(Data['cpu'])
+    Print('test1',Data)
 
 def receive(msgbroker,routingkey,vhost='/',credentials='guest'):
+    '''
     if credentials != "guest":
         credentials = str(credentials).split(':'); 
         try:
         #create connection
-            client = MQClient(msgbroker,'tester1',credentials[0],\
-                              credentials[1],vhost,Consumer.Debug)
+            client = MQClient('172.29.4.35','host1','Usage',\
+                              'team15','usage_vhost',Consumer.Debug)
             client.subscribe(recv)
         except KeyboardInterrupt:
             print("Exiting...")
     else :	
-        try:
-            #create connection
-            client = MQClient(msgbroker,'tester1','guest','guest',\
-                              vhost,Consumer.Debug)
-            client.subscribe(recv)
-        except KeyboardInterrupt:
-            print("Exiting...")
+    '''
+    try:
+    # create connection
+        client = MQClient('172.29.4.35','tester1','Usage','team15',\
+                              'usage_vhost',Consumer.Debug)
+        client.subscribe(recv)
+    except KeyboardInterrupt:
+        print("Exiting...")
 
 def savedb(data):
     db = pymongo.MongoClient().hw2
-    db.utilization.insert(data)
+    db.utilization.insert(Data)
 
 def run():
     if(arg['c']!= 'None' and arg['p']!= 'None'):
@@ -98,7 +99,7 @@ def run():
         receive(arg['msgbroker'],arg['routkey'])
 
 
-def Print(host,data):
+# def Print(host,data):
     CPUHigh = 0
     CPULow = 10000
 
@@ -116,9 +117,9 @@ def Print(host,data):
     wlan0LowRX = 10000
     wlan0HighTX = 0
     wlan0LowTX = 10000
-
+def Print(host,data):
     if data['cpu'] > CPUHigh:
-        CPUPHigh = data['cpu']
+        CPUHigh = data['cpu']
     if data['cpu'] < CPULow:
         CPULow = data['cpu']
 
