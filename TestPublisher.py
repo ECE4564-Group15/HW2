@@ -4,7 +4,7 @@ from RabbitMQClient import MQClient, Publisher
 
 def main():
     #create a connection
-    client = MQClient('172.29.35.28','tester1','Usage','team15','usage_vhost',Publisher.Debug)
+    client = MQClient('172.29.0.86','tester1','Usage','team15','usage_vhost',Publisher.Debug)
 
     try:
         while True:
