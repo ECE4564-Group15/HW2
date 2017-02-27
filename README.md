@@ -1,5 +1,5 @@
-# HW2
-HW2 Little Brother
+# SuperHost
+This branch is used to implement the host functionality.The host needs to sent CPU & Network load monitoring data to clients as a json Object.
 
 # How to setup RabbitMQ
 The RabbitMQ configuration used in this project is simple. We have a shell script that can be run that adds the new user: `Usage` with password `team15`. It also sets up a new vhost `usage_vhost` that can be specified. Finally, it adds the proper permissions for the new user and vhost as well as the guest and default vhost.
