@@ -51,12 +51,13 @@ def argvparser():
                         help='The routing key to use for filtering when \
                         subscribing to the pi_utilization exchange\
                         on the message broker')
-    arg = vars(parser.parse_args())
+    arg = parser.parse_args()
+    
 
 def init__LED():
-    os.system("echo 17 > /sys/class/gpio/export") # blue
-    os.system("echo 19 > /sys/class/gpio/export") # green
-    os.system("echo 21 > /sys/class/gpio/export") # red
+    os.system("echo 17 > /sys/class/gpio/export || true") # blue
+    os.system("echo 19 > /sys/class/gpio/export || true") # green
+    os.system("echo 21 > /sys/class/gpio/export || true") # red
     os.system("echo out > /sys/class/gpio/gpio17/direction")
     os.system("echo out > /sys/class/gpio/gpio19/direction")
     os.system("echo out > /sys/class/gpio/gpio21/direction")
@@ -82,22 +83,23 @@ def recv(msg):
     Print('test1',Data)
 
 def receive(msgbroker,routingkey,vhost='/',credentials='guest'):
-    '''
-    if credentials != "guest":
-        credentials = str(credentials).split(':'); 
-        try:
-        #create connection
-            client = MQClient('172.29.4.35','host1','Usage',\
-                              'team15','usage_vhost',Consumer.Debug)
-            client.subscribe(recv)
-        except KeyboardInterrupt:
-            print("Exiting...")
-    else :	
-    '''
+    if credentials[0] == 'guest':
+        login = str('guest')
+        password = str('guest')
+
+    else:
+        credentials = credentials[0].split(':')
+        login = credentials[0]
+        password = credentials[1]
+    
+    print (login )
+    msgbroker = msgbroker[0]
+    routingkey = routingkey[0]
+    vhost = vhost[0]
     try:
     # create connection
-        client = MQClient('172.29.4.35','tester1','Usage','team15',\
-                              'usage_vhost',Consumer.Debug)
+        client = MQClient(msgbroker,routingkey, login,password,\
+                          vhost ,Consumer.Debug)
         client.subscribe(recv)
     except KeyboardInterrupt:
         print("Exiting...")
@@ -107,14 +109,14 @@ def savedb(data):
     db.utilization.insert(Data)
 
 def run():
-    if(arg['c']!= 'None' and arg['p']!= 'None'):
-        receive(arg['msgbroker'],arg['routkey'],arg['p'],arg['c'])
-    elif(arg['c']!= 'None'):
-        receive(arg['msgbroker'],arg['routkey'],credential = arg['c'])
-    elif(arg['p']!='None'):
-        receive(arg['msgbroker'],arg['routkey'],vhost = arg['p'])
+    if(arg.c != 'None' and arg.p!= 'None'):
+        receive(arg.msgbroker,arg.routkey,arg.p,arg.c)
+    elif(arg.c != 'None'):
+        receive(arg.msgbroker,arg.routkey,credential = arg.c)
+    elif(arg.p !='None'):
+        receive(arg.msgbroker,arg.routkey,vhost = arg.p)
     else:
-        receive(arg['msgbroker'],arg['routkey'])
+        receive(arg.msgbroker,arg.routkey)
 
 
 # def Print(host,data):
@@ -200,11 +202,12 @@ def main():
     argvparser()
     init__LED()
     run()
-    Print("Host_1", Data)
+    Print(arg.routingkey, Data)
     savedb(Data)
     LED(data['cpu'])
     
 
 main()    
+
 
 

@@ -69,7 +69,7 @@ class MQClient:
             self.connection = pika.BlockingConnection(self.connection_params)
             self.channel = self.connection.channel()
         except PE.ConnectionClosed:
-            print('Error!: Invalid host address: %s' % (str(self.hostname),))
+            print('Error!: Invalid host address: %s' % (type(self.hostname),))
             raise ValueError
         except PE.ProbableAuthenticationError:
             print('Error!: Invalid username and password.')
