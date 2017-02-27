@@ -65,12 +65,12 @@ For bost host and monitor, we have the similar usage as following. When we use i
 
 Usage:
     ```python
-    pistatd.py [-h] [-b MSGBROKER] [-p P] [-c C] [-k ROUTKEY]
+    pistatd.py [-h] -b MSGBROKER [-p P] [-c C] -k ROUTKEY
     ```
     
 Example:
     ```
-    pistatd.py -b 127.0.0.1 -p usage_vhost -c Usage:team15 -k host_1
+    pistatd.py -b 127.0.0.1 [-p usage_vhost] [-c Usage:team15] -k host_1
     ```
 
 optional arguments:
