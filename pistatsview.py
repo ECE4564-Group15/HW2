@@ -10,9 +10,9 @@
 import os
 import time
 import json   
-#import pymongo # database
-# import pika    
-#from RabbitMQClient import MQClient, Consumer 
+import pymongo # database
+import pika    
+from RabbitMQClient import MQClient, Consumer 
 import argparse
 
 stats = '{ "net": {"lo": {"rx": 5,"tx": 3},"wlan0": {"rx": 708,"tx": 1192}, \
@@ -20,7 +20,7 @@ stats = '{ "net": {"lo": {"rx": 5,"tx": 3},"wlan0": {"rx": 708,"tx": 1192}, \
 
 Data = json.loads(stats)
 
-'''
+
 def argvparser():
     global arg
     parser = argparse.ArgumentParser()
@@ -61,8 +61,8 @@ def LED(cpuU) :
        os.system("echo 1 >/sys/class/gpio/gpio21/value")
 
 def recv(msg):
-    global data
-    data = json.loads(msg)
+    global Data
+    Data = json.loads(msg)
 
 def receive(msgbroker,routingkey,vhost='/',credentials='guest'):
     if credentials != "guest":
@@ -77,16 +77,16 @@ def receive(msgbroker,routingkey,vhost='/',credentials='guest'):
     else :	
         try:
             #create connection
-            client = MQClient(msgbroker,'tester1','Usage','team15',\
+            client = MQClient(msgbroker,'tester1','guest','guest',\
                               vhost,Consumer.Debug)
             client.subscribe(recv)
         except KeyboardInterrupt:
             print("Exiting...")
-'''
+
 def savedb(data):
     db = pymongo.MongoClient().hw2
     db.utilization.insert(data)
-'''
+
 def run():
     if(arg['c']!= 'None' and arg['p']!= 'None'):
         receive(arg['msgbroker'],arg['routkey'],arg['p'],arg['c'])
@@ -97,7 +97,7 @@ def run():
     else:
         receive(arg['msgbroker'],arg['routkey'])
 
-'''
+
 def Print(host,data):
     CPUHigh = 0
     CPULow = 10000
@@ -176,12 +176,12 @@ def Print(host,data):
 
       
 def main():
-  #  argvparser()
-  #  run()
-  #  init__LED()
+    argvparser()
+    init__LED()
+    run()
     Print("Host_1", Data)
     savedb(Data)
-  #  LED(data['cpu'])
+    LED(data['cpu'])
     
 
 main()    
