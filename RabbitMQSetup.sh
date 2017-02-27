@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
-rabbitmqctl add_user Usage team15
-rabbitmqctl add_vhost usage_vhost
-rabbutmqctl set_permissions -p usage_vhost "Usage" ".*" ".*" ".*"
+sudo rabbitmqctl add_user Usage team15
+sudo rabbitmqctl add_vhost usage_vhost
+sudo rabbitmqctl set_permissions -p usage_vhost "Usage" ".*" ".*" ".*"
